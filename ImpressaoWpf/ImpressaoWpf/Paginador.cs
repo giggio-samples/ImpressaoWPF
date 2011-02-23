@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -9,18 +8,12 @@ namespace ImpressaoWpf
 {
     class Paginador : DocumentPaginator
     {
-        public Paginador(Size pageSize)
+        public Paginador(IList<Cliente> clientes, Size pageSize)
         {
             PageSize = pageSize;
-            _clientes = _servicoDados.ObterClientes();
-            foreach (var cliente in _clientes)
-            {
-                var img = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "imgs", "Microsoft_windows_logo.png");
-                cliente.ImagemFrenteMarcaDAgua = img;
-            }
+            _clientes = clientes;
         }
 
-        private readonly ServicoDados _servicoDados = new ServicoDados();
         private readonly IList<Cliente> _clientes;
         private int _paginaAtual;
         private Cliente _clienteAtual;
@@ -38,14 +31,10 @@ namespace ImpressaoWpf
                 controleParaImprimir = new Verso();
             }
             _paginaAtual++;
-            controleParaImprimir.Width = PageSize.Width;
-            controleParaImprimir.Height = PageSize.Height;
             controleParaImprimir.DataContext = _clienteAtual;
-            controleParaImprimir.Measure(PageSize);
             controleParaImprimir.Arrange(new Rect(new Point(0, 0), PageSize));
             controleParaImprimir.UpdateLayout();
             return new DocumentPage(controleParaImprimir);
-
         }
 
         public override bool IsPageCountValid

@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 
 namespace ImpressaoWpf
 {
@@ -6,10 +8,11 @@ namespace ImpressaoWpf
     {
         public IList<Cliente> ObterClientes()
         {
+            var img = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "imgs", "Microsoft_windows_logo.png");
             return new List<Cliente>
                        {
-                           new Cliente {Nome = "Giovanni"},
-                           new Cliente {Nome = "Felipe"},
+                           new Cliente {Nome = "Giovanni", ImagemFrenteMarcaDAgua = img},
+                           new Cliente {Nome = "Felipe", ImagemFrenteMarcaDAgua = img},
                        };
         }
     }

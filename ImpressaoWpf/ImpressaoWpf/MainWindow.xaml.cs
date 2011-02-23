@@ -17,24 +17,24 @@ namespace ImpressaoWpf
             var printDialog = new PrintDialog();
             if (printDialog.ShowDialog() != true) return;
 
-            var paginator = new Paginador(new Size(printDialog.PrintableAreaWidth,
-                                                   printDialog.PrintableAreaHeight));
-
+            var paginator = new Paginador(new ServicoDados().ObterClientes(),
+                                                new Size(printDialog.PrintableAreaWidth,
+                                                printDialog.PrintableAreaHeight));
             printDialog.PrintDocument(paginator, "Impressão Wpf");
         }
 
         private void PreviewClick(object sender, RoutedEventArgs e)
         {
             var printDialog = new PrintDialog();
-            var paginator = new Paginador(new Size(printDialog.PrintableAreaWidth,
-                                                   printDialog.PrintableAreaHeight));
+            var paginator = new Paginador(new ServicoDados().ObterClientes(),
+                                                new Size(printDialog.PrintableAreaWidth,
+                                                printDialog.PrintableAreaHeight));
             using (var xpsDocument = new XpsDocument(Path.GetRandomFileName(), FileAccess.ReadWrite))
             {
                 var writer = XpsDocument.CreateXpsDocumentWriter(xpsDocument);
                 writer.Write(paginator);
                 var previewWindow = new PrintPreview
                 {
-                    Owner = this,
                     Document = xpsDocument.GetFixedDocumentSequence()
                 };
                 previewWindow.ShowDialog();
