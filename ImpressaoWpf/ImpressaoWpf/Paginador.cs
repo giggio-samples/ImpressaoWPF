@@ -1,44 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 
-namespace ImpressaoWpf.Impressao
+namespace ImpressaoWpf
 {
     class Paginador : DocumentPaginator
     {
-        private Size _pageSize;
-
         public Paginador(Size pageSize)
         {
             PageSize = pageSize;
             _clientes = _servicoDados.ObterClientes();
             foreach (var cliente in _clientes)
             {
-                cliente.ImagemFrenteMarcaDAgua = "file:///C:/Users/Alan.PACTOR/Pictures/Microsoft_windows_logo.png";
-                //cliente.ImagemFrenteMarcaDAgua = "file:///C:/Users/Alan.PACTOR/Pictures/logo_life_clube.png";
+                var img = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "imgs", "Microsoft_windows_logo.png");
+                cliente.ImagemFrenteMarcaDAgua = img;
             }
         }
 
-        private ServicoDados _servicoDados = new ServicoDados();
-        private IList<Cliente> _clientes;
-        private int paginaAtual = 0;
+        private readonly ServicoDados _servicoDados = new ServicoDados();
+        private readonly IList<Cliente> _clientes;
+        private int _paginaAtual;
         private Cliente _clienteAtual;
 
         public override DocumentPage GetPage(int pageNumber)
         {
             Control controleParaImprimir;
-            if (paginaAtual % 2 == 0)
+            if (_paginaAtual % 2 == 0)
             {
                 controleParaImprimir = new Frente();
-                _clienteAtual = _clientes[paginaAtual / 2];
+                _clienteAtual = _clientes[_paginaAtual / 2];
             }
             else
             {
                 controleParaImprimir = new Verso();
             }
-            paginaAtual++;
+            _paginaAtual++;
             controleParaImprimir.Width = PageSize.Width;
             controleParaImprimir.Height = PageSize.Height;
             controleParaImprimir.DataContext = _clienteAtual;
@@ -55,11 +54,7 @@ namespace ImpressaoWpf.Impressao
         public override int PageCount
         { get { return _clientes.Count * 2; } }
 
-        public override Size PageSize
-        {
-            get { return _pageSize; }
-            set { _pageSize = value; }
-        }
+        public override Size PageSize { get; set; }
 
         public override IDocumentPaginatorSource Source
         { get { return null; } }

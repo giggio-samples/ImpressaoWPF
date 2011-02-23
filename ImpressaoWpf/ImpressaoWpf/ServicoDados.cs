@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ImpressaoWpf.Impressao
+namespace ImpressaoWpf
 {
     public class ServicoDados
     {
@@ -9,7 +9,7 @@ namespace ImpressaoWpf.Impressao
             return new List<Cliente>
                        {
                            new Cliente {Nome = "Giovanni"},
-                           new Cliente {Nome = "Alan"},
+                           new Cliente {Nome = "Felipe"},
                        };
         }
     }

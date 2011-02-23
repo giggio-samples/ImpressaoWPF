@@ -1,17 +1,11 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Xps;
 using System.Windows.Xps.Packaging;
-using ImpressaoWpf.Impressao;
 
 namespace ImpressaoWpf
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         public MainWindow()
         {
@@ -26,7 +20,7 @@ namespace ImpressaoWpf
             var paginator = new Paginador(new Size(printDialog.PrintableAreaWidth,
                                                    printDialog.PrintableAreaHeight));
 
-            printDialog.PrintDocument(paginator, "My Random Data Table");
+            printDialog.PrintDocument(paginator, "Impressão Wpf");
         }
 
         private void PreviewClick(object sender, RoutedEventArgs e)
@@ -34,14 +28,10 @@ namespace ImpressaoWpf
             var printDialog = new PrintDialog();
             var paginator = new Paginador(new Size(printDialog.PrintableAreaWidth,
                                                    printDialog.PrintableAreaHeight));
-
-            var tempFileName = Path.GetRandomFileName();
-
-            using (var xpsDocument = new XpsDocument(tempFileName, FileAccess.ReadWrite))
+            using (var xpsDocument = new XpsDocument(Path.GetRandomFileName(), FileAccess.ReadWrite))
             {
-                XpsDocumentWriter writer = XpsDocument.CreateXpsDocumentWriter(xpsDocument);
+                var writer = XpsDocument.CreateXpsDocumentWriter(xpsDocument);
                 writer.Write(paginator);
-
                 var previewWindow = new PrintPreview
                 {
                     Owner = this,
