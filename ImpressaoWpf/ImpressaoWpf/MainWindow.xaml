@@ -1,0 +1,10 @@
+﻿<Window x:Class="ImpressaoWpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="100" Width="100">
+    <StackPanel Name="sp">
+        <StackPanel Orientation="Horizontal"></StackPanel>
+        <Button Click="PrintClick">Imprime!</Button>
+        <Button Click="PreviewClick">Preview...</Button>
+    </StackPanel>
+</Window>
